@@ -18,5 +18,34 @@ model User {
   name       String?
   email      String   @unique
   password   String?
+  avatar_url String?
+  post Post[]
+  comments Comment[]
   created_at DateTime @default(now())
+  updatedAt  DateTime? @updatedAt
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // agr hum chaty hy n ky jb koi user delte ho to os kw all post and comments auto delete ho jayn.z
+  // user User @relation(fields: [userId], references: [id],)
+  userId Int
+  title String
+  description String
+  img_url String?
+  comments_count Int @default(0)
+  comments Comment[]
+  created_at DateTime @default(now())
+  updatedAt  DateTime? @updatedAt
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  comment String
+  created_at DateTime @default(now())
+
 }

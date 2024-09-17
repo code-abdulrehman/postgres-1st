@@ -3,7 +3,7 @@ import prisma from "../DB/db.config.js";
 // createuser 
 export const createUser = async(req, res) => {
 
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar_url } = req.body;
 
     const findUser = await prisma.user.findUnique({
 
@@ -20,7 +20,8 @@ export const createUser = async(req, res) => {
         data: {
             name:name,
             email: email,
-            password: password
+            password: password,
+            avatar_url:avatar_url
         },
     });
 
@@ -30,7 +31,21 @@ export const createUser = async(req, res) => {
 // get all users 
 export const fetchUsers = async(req, res) => {
 
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+
+        // select: {
+        //     _count: {
+        //         select: {
+        //             post: true,
+        //             comments: true
+        //         }
+        //     }
+        // },
+        include:{
+            post:true
+        }
+      
+    });
 
       // Check if no users found
       if (!users || users.length === 0) {
@@ -47,7 +62,7 @@ export const updateUser = async(req, res) => {
 
     const userId = req.params.id;
 
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar_url } = req.body;
 
     await prisma.user.update({
         where: {
@@ -56,7 +71,8 @@ export const updateUser = async(req, res) => {
         data: {
             name: name,
             email:email,
-            password: password
+            password: password,
+            avatar_url: avatar_url
         },
     });
 
