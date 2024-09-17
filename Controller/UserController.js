@@ -78,7 +78,7 @@ export const getUser = async(req, res) => {
     });
 
 
-    return res.status(200).json({ status:200,data:user, message: "User successfully updated." });
+    return res.status(200).json({ status:200,data:user, message: "Fetch User successfully." });
 
 }
 
